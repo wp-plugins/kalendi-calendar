@@ -67,7 +67,7 @@ function register_kalendi_widget() {
 function kalendi_widget_admin_header() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'farbtastic' );
-	wp_enqueue_script( 'kalendi_widget_admin', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/kalendi_widget_admin.js', array('jquery', 'farbtastic'));
+	wp_enqueue_script( 'kalendi_widget_admin', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/kalendi_widget_admin.js', array('jquery', 'farbtastic'));
 }
 
 function kalendi_widget_admin_style() {	

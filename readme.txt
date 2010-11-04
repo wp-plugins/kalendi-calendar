@@ -20,7 +20,7 @@ The plugin widget displays a calendar and lists events or posts by date undernea
 
 Install and Activate the Kalendi Calendar plugin:
 1) Download the Kalendi Plugin from http://www.kalendi.com/products/wordpress.html
-2) Extract the contents of kalendi-wordpress.zip into your
+2) Extract the contents of kalendi-calendar.zip into your
 wp-content/plugins directory
 3) Log in as an admin.
 4) On the admin panel on the left side of the screen click on ‘Plugins’

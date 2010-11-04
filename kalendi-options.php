@@ -31,15 +31,15 @@ class kalendi_wordpress_options {
 		//mlog("INCLUDING JQUERY JS STUFF");
 		wp_enqueue_script( 'tiny_mce' );
 		wp_enqueue_script( 'jquery' );		
-		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/jquery-ui-1.7.3.custom.min.js', array('jquery'));
-		wp_enqueue_script( 'jquery-validate', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/jquery.validate.js', array('jquery'));
-		wp_enqueue_script( 'additional-methods', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/additional-methods.js', array('jquery', 'jquery-validate'));
-		wp_enqueue_script( 'events-page', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/events-page.js', array('jquery', 'jquery-ui-datepicker'));
+		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/jquery-ui-1.7.3.custom.min.js', array('jquery'));
+		wp_enqueue_script( 'jquery-validate', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/jquery.validate.js', array('jquery'));
+		wp_enqueue_script( 'additional-methods', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/additional-methods.js', array('jquery', 'jquery-validate'));
+		wp_enqueue_script( 'events-page', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/events-page.js', array('jquery', 'jquery-ui-datepicker'));
 	}
 	
 	function kalendi_admin_styles() {	
 		mlog("INCLUDING JQUERY STYLE STUFF");
-		wp_enqueue_style( 'jquery-ui-lightness', WP_PLUGIN_URL . '/kalendi-wordpress/css/ui-lightness/jquery-ui-1.7.3.custom.css');
+		wp_enqueue_style( 'jquery-ui-lightness', WP_PLUGIN_URL . '/kalendi-calendar/css/ui-lightness/jquery-ui-1.7.3.custom.css');
 	}
 	
 	function check_event_post() {

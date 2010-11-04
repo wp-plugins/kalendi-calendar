@@ -283,13 +283,13 @@ class KalendiWordPressUtils {
 		?><script type="text/javascript" 			src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 			<script language="Javascript">
 			$(document).ready(function () {
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/widgetbasics.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/dombuilder.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/events-api.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/widget_mm.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/bubble.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/printcontrol.js")
-			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-wordpress/javascripts/SearchAttribute.js", get_vt_events776)
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/widgetbasics.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/dombuilder.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/events-api.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/widget_mm.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/bubble.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/printcontrol.js")
+			  require("<?php echo WP_PLUGIN_URL ?>/kalendi-calendar/javascripts/SearchAttribute.js", get_vt_events776)
 			})
 			
 			function require(URL, onload) {
