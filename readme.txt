@@ -92,8 +92,14 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 = 1.0 =
 * Initial Release
 
+= 1.01 =
+* Adjusted Stylesheet
+
 == Upgrade Notice ==
 
 = 1.0 =
 Initial Release
+
+= 1.01 =
+Adjusted Stylesheet
 

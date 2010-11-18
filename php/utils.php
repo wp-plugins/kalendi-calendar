@@ -400,6 +400,7 @@ class KalendiWordPressUtils {
 			table-layout:fixed;
 			word-wrap:break-word;
 			width:100%;
+			margin:0px;
 			}
 			#widget776 .cal_lines {
 			background-color:<?php echo $color3 ?>;
@@ -437,6 +438,11 @@ class KalendiWordPressUtils {
 			}
 			#widget776 td {
 			padding:1px;
+			border:0px;
+			}
+			#widget776 tr td{
+			padding:1px;
+			border:0px;
 			}
 			#widget776 .cal_day_heading {
 			background-color:<?php echo $color1 ?>;
