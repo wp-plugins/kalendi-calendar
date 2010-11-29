@@ -238,28 +238,28 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
 		img1.innerHTML = '&laquo;'; img2.innerHTML = '&raquo;'; img1.field = img2.field = "year"; img1.val = this.year - 1; img2.val = this.year + 1
 		schedule.appendChild(DIV({"class" : "cal_lines"},TABLE({onmouseover : "this.style.cursor=hand", "cellSpacing": "1", "cellPadding": "0", width : "100%"}, table = TBODY(inner = TR()))))
 		for (var i=0;i<6;i++) {
-			inner.appendChild(elem = TD({"class" : (dt.getMonth() == i ? "calmonthon" : "calmonth")},months[i]))
+			inner.appendChild(elem = TD({"class" : (dt.getMonth() == i ? "calmonthon" : "calmonth"),"style":"padding:1px;"},months[i]))
 			elem.mode = elem.field = "month"; elem.val = i; 
 		}
 		inner = table.appendChild(TR())
 		for (var i=6;i<12;i++) {
-			inner.appendChild(elem = TD({"class" : (dt.getMonth() == i ? "calmonthon" : "calmonth")},months[i]))
+			inner.appendChild(elem = TD({"class" : (dt.getMonth() == i ? "calmonthon" : "calmonth"),"style":"padding:1px;"},months[i]))
 			elem.mode = elem.field = "month"; elem.val = i
 		}
 		inner = table.appendChild(TR())
-		inner.appendChild(TD({width: "16.66%", "bgColor": "white"}," "))
-		inner.appendChild(TD({"colSpan" : "5"},TABLE({width:"100%", "cellSpacing": "1", "cellPadding": "0"},TBODY(TR(TD({"class": "caldayhdr"},"S"),TD({"class": "caldayhdr"},"M"),TD({"class": "caldayhdr"},"T"),
-													TD({"class": "caldayhdr"},"W"),TD({"class": "caldayhdr"},"T"),TD({"class": "caldayhdr"},"F"),TD({"class": "caldayhdr"},"S"))))))
+		inner.appendChild(TD({width: "16.66%", "bgColor": "white","style":"padding:1px;"}," "))
+		inner.appendChild(TD({"colSpan" : "5","style":"padding:1px;"},TABLE({width:"100%", "cellSpacing": "1", "cellPadding": "0"},TBODY(TR(TD({"class": "caldayhdr","style":"padding:1px;"},"S"),TD({"class": "caldayhdr","style":"padding:1px;"},"M"),TD({"class": "caldayhdr","style":"padding:1px;"},"T"),
+													TD({"class": "caldayhdr","style":"padding:1px;"},"W"),TD({"class": "caldayhdr","style":"padding:1px;"},"T"),TD({"class": "caldayhdr","style":"padding:1px;"},"F"),TD({"class": "caldayhdr","style":"padding:1px;"},"S"))))))
 		dt.setDate(1); dt.setDate(dt.getDate() - dt.getDay())
 		while ((dt.getMonth() <= this.month && dt.getFullYear() <= this.year)|| (this.month == 0 && dt.getMonth() == 11))  {
-			table.appendChild(TR(TD({align: "right","bgColor": "white","class":"week_select"}, elem = IMG({src: (btn_right_small_defined ? host + "kalendi/portal/images/spacer.gif" : host + "kalendi/portal/images/btn_right_small.gif"), height: "7px", width: "7px", "class": "btn_right_small"})),TD({"colSpan" : "5"},TABLE({width: "100%", "cellSpacing": "1", "cellPadding": "0"},TBODY(inner = TR())))))
+			table.appendChild(TR(TD({align: "right","bgColor": "white","class":"week_select","style":"padding:1px;"}, elem = IMG({src: (btn_right_small_defined ? host + "kalendi/portal/images/spacer.gif" : host + "kalendi/portal/images/btn_right_small.gif"), height: "7px", width: "7px", "class": "btn_right_small","style":"width:7px"})),TD({"colSpan" : "5"},TABLE({width: "100%", "cellSpacing": "1", "cellPadding": "0"},TBODY(inner = TR())))))
 			elem.mode = elem.field = elem.parentNode.mode = elem.parentNode.field = "week"; elem.val = elem.parentNode.val = new Date(dt.getTime());
 			for (var i=0;i<7;i++) {
 				var curclass = (dt.getMonth() != this.month ? "caldayout" : 
 								(this.mode == "day" && dt.getDate() == this.day ? "caldayon" : 
 								 (this.mode == "week" && dt >= this.week && dt < this.nextWeek ? "caldayon" :(this.mode == 'month' ? "caldayon" : "calday"))))
 				if (eventInfo && eventInfo[dt.getDate()] != null && dt.getMonth() == this.month) curclass += " caldayhasevents"
-				inner.appendChild(elem = TD({"class": curclass, width: "13.28%"},dt.getDate().toString()))
+				inner.appendChild(elem = TD({"class": curclass, width: "13.28%","style":"padding:1px;"},dt.getDate().toString()))
 				if (dt.getMonth() == this.month) {
 					elem.mode = elem.field = "day"; elem.val = dt.getDate()
 				}
@@ -378,7 +378,7 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
         }	    
 		var tr = TR()
 		if (day == endDay || events.length > 0) {
-			var td = TD({"class": "cal_day_heading", "colSpan": "2"})
+			var td = TD({"class": "cal_day_heading", "colSpan": "2","style":"padding:1px;"})
 			td.appendChild (document.createTextNode(this.formatDate(yyyy,mm,dy,true)));
 			tr.appendChild (td);
 			this.replaceOrInsertNode (rows, kids, idx, tr);
@@ -386,7 +386,7 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
 		}
         var len = this.limit ? Math.min(this.limit,events.length) : events.length
         if (len == 0 && this.emptyString && day == endDay) {
-          rows.appendChild(TR(TD({"class":"cal_row_even","colSpan":"2"},this.emptyString)))
+          rows.appendChild(TR(TD({"class":"cal_row_even","colSpan":"2","style":"padding:1px;"},this.emptyString)))
           idx++
         } else
         for (var i=0; i<len; i++) {
@@ -401,7 +401,7 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
                 rowclass = "cal_row_odd";
             }
             var tr = TR()
-            var td = TD({"class": rowclass})
+            var td = TD({"class": rowclass,"style":"padding:1px;"})
             td.elementID = info.instanceID
             td.printExpander = function (event,widget) { return function (obj) { 
             					widget.addPrintDetails(obj.lastChild.previousSibling,event) }}(info,this)
@@ -469,7 +469,7 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
 				tr.appendChild(td);
 				innertab.appendChild(TR());
 				innertab = innertab.firstChild;
-				td = TD({"class":"cal_row_content", "colSpan": "2"});
+				td = TD({"class":"cal_row_content", "colSpan": "2","style":"padding:1px;"});
 				innertab.appendChild(TR(td));
 				td.appendChild(H3({}, info.caption));//"<p>JUSTATEST</p>");
 				var url = info["wp post url"];
@@ -545,14 +545,14 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
 				
 		    if (event[key].indexOf("__url") == 0) {
 		      var url = event[key].substring(5);
-		      innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"}, key + ":"), TD({"class":"cal_row_content","colSpan":"2"},A({href: url},"Click here"))))
+		      innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"}, key + ":"), TD({"class":"cal_row_content","colSpan":"2","style":"padding:1px;"},A({href: url},"Click here"))))
 		    } else if (event[key].indexOf("http:") == 0 || event[key].indexOf("https:") == 0) {
-		      innertab.appendChild(TR({"class":"expanded"}, TH({"class":"cal_row_content",align:"left"}, key + ":"), TD({"class":"cal_row_content","colSpan": "2"},A({href: event[key]},"Click here"))))
+		      innertab.appendChild(TR({"class":"expanded"}, TH({"class":"cal_row_content",align:"left"}, key + ":"), TD({"class":"cal_row_content","colSpan": "2","style":"padding:1px;"},A({href: event[key]},"Click here"))))
 		    } else if (key.toLowerCase() == 'mapit') {
-		    	innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"},"Get Directions: "), TD({"class":"cal_row_content","colSpan": "2"},A({onmouseover: "this.style.cursor=hand", onclick: "getDirections(event, '" + event[key].replace(/<br>/gi, " ") + "')", style: "cursor: pointer;text-decoration:underline"},"Click here"))))
+		    	innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"},"Get Directions: "), TD({"class":"cal_row_content","colSpan": "2","style":"padding:1px;"},A({onmouseover: "this.style.cursor=hand", onclick: "getDirections(event, '" + event[key].replace(/<br>/gi, " ") + "')", style: "cursor: pointer;text-decoration:underline"},"Click here"))))
 		    }else {
 			 		if(!key.match("wp "))
-			 			innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"},key,": "),(TD({"class":"cal_row_content"},event[key])))) }
+			 			innertab.appendChild(TR({"class":"expanded"},TH({"class":"cal_row_content",align:"left"},key,": "),(TD({"class":"cal_row_content","style":"padding:1px;"},event[key])))) }
      }
     obj.src = "http://www.kalendi.com/kalendi/portal/images/minus.gif"
     obj.onclicksave = obj.onclick
