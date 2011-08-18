@@ -31,15 +31,15 @@ class kalendi_wordpress_options {
 		//mlog("INCLUDING JQUERY JS STUFF");
 		wp_enqueue_script( 'tiny_mce' );
 		wp_enqueue_script( 'jquery' );		
-		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/jquery-ui-1.7.3.custom.min.js', array('jquery'));
-		wp_enqueue_script( 'jquery-validate', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/jquery.validate.js', array('jquery'));
-		wp_enqueue_script( 'additional-methods', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/additional-methods.js', array('jquery', 'jquery-validate'));
-		wp_enqueue_script( 'events-page', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/events-page.js', array('jquery', 'jquery-ui-datepicker'));
+		wp_enqueue_script( 'jquery-ui-datepicker', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/jquery-ui-1.7.3.custom.min.js', array('jquery'));
+		wp_enqueue_script( 'jquery-validate', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/jquery.validate.js', array('jquery'));
+		wp_enqueue_script( 'additional-methods', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/additional-methods.js', array('jquery', 'jquery-validate'));
+		wp_enqueue_script( 'events-page', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/events-page.js', array('jquery', 'jquery-ui-datepicker'));
 	}
 	
 	function kalendi_admin_styles() {	
 		mlog("INCLUDING JQUERY STYLE STUFF");
-		wp_enqueue_style( 'jquery-ui-lightness', WP_PLUGIN_URL . '/kalendi-calendar/css/ui-lightness/jquery-ui-1.7.3.custom.css');
+		wp_enqueue_style( 'jquery-ui-lightness', WP_PLUGIN_URL . '/kalendi-wordpress/css/ui-lightness/jquery-ui-1.7.3.custom.css');
 	}
 	
 	function check_event_post() {
@@ -513,6 +513,9 @@ class kalendi_wordpress_options {
 			mlog("ACTIVATED");
 			mlog("olduname/newuname: $old_username/$new_username");
 			mlog("oldpword/newpword: $old_password/$new_password");
+			
+			$result = $this->util->createCalendars();
+			
 			if($old_username != $new_username || $old_password != $new_password) {
 				// We need to change the Kalendi info
 				$params = array(
@@ -634,6 +637,30 @@ class kalendi_wordpress_options {
 		$custom_props_created = (boolean)get_option('kalendi_custom_props_created2');
 		
 	?>
+		<SCRIPT LANGUAGE="JavaScript">
+
+		<!-- This script and many more are available free online at -->
+		<!-- The JavaScript Source!! http://javascript.internet.com -->
+		<!-- Original:  Caleb Larsen (caleb@mopedarmy.com) -->
+		<!-- Web Site:  http://www.wmich.edu/apps/passmultiplevalues.html -->
+
+		<!-- Begin
+		
+		function passText() {
+		  
+			oldvalue = jQuery('#kalendi_watch_list').val();
+			var passedvalue = ""; 
+			jQuery('#kalendi_blogs :selected').each(function(i, selected){ 
+			  passedvalue = passedvalue + "\n" + jQuery(selected).val(); 
+			});
+		    var totalvalue = oldvalue+passedvalue;
+		    jQuery('#kalendi_watch_list').val(totalvalue);
+		    oldvalue = jQuery('#kalendi_watch_list').val();
+		  
+		}
+		//  End -->
+		</script>
+		
 		<table>
 		<tr>
 		<td valign="top">
@@ -700,27 +727,38 @@ class kalendi_wordpress_options {
 		<h2>Kalendi for WordPress Options</h2>
 		
 		<p>
-			With the Kalendi for WordPress plugin you can "watch" another WordPress blog or another WordPress author. By doing this all their posts will show up in a list on your blogs front page. This is a great way to provide your blog viewers with additional content that you like.
+			With the Kalendi for WordPress plugin you can "watch" another WordPress blog. By doing this all their posts will show up in a list on your blogs front page. This is a great way to provide your blog viewers with additional content that you like.
 		</p>
 		<p>
-			In order to "watch" a blog or author, simply enter the blog URL or the authors email in the watch box below. Each entry should be on its own line.<br/><br/> Example: <br/><br/>
+			In order to "watch" a blog, simply enter the blog URL in the watch box below. Each entry should be on its own line.<br/><br/> Example: <br/><br/>
 			www.myfavoriteblog.com/blog<br/>
-			johndoe@gmail.com<br/>
-			another.author@gmail.com<br/>
-			www.anotherblog.com/my_blog
+			www.anotherblog.com/my_blog<br/>
+			anotherfav.wordpress.com
 		</p>
 
-		<table class="form-table">
-			<tr valign="top">
-				<th scope="row">
-					Watch List
-				</th>
-			<td>
-				<textarea rows="6" cols="40" name="kalendi_watch_list"><?php echo get_option('kalendi_watch_list') ?></textarea>
-			</td>
-			</tr>
+		<p>Watch List</p>
+				
+			   	<textarea rows="6" cols="40" id="kalendi_watch_list" name="kalendi_watch_list"><?php echo get_option('kalendi_watch_list') ?></textarea> 
+				<p>Choose from these Kalendi user blogs and click the "Add to list" button to add them to your watch list. Select multiple items with CTRL+click.
+				<select multiple="multiple" size="10" id="kalendi_blogs" name="kalendi_blogs" style="height:150px;width:200px;">
+				<?php
+					$arr = array();
+					$arr = $this->util->getWPCalendars();
+					$options = get_option("kalendi_watch_list");
+					foreach($arr as $i => $value){
+						//echo "Array element ".$i.": ".$arr[$i]."<br>";
+					
+					 if ( in_array( $i, $options ))
+					        echo "\n\t<option selected='selected' id='". $i . "' name='". $i . "' value='" . $i . "'>$value</option>";
+					 else
+					       	echo "\n\t<option id='". $i . "' name='". $i . "' value='" . $i . "'>$value</option>";
 
-		</table>
+					 }
+				?> 
+					    
+				</select> 
+				<input type=button value="Add to list" onClick="passText();">
+			
 		
 		<h2>Import Posts Options</h2>
 		

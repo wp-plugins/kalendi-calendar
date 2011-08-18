@@ -1,9 +1,11 @@
 <?php
 
 class Kalendi_Widget extends WP_Widget {
+	protected $util;
 	
 	function Kalendi_Widget()	{
 		// Widget Constructor
+		$this->util = new KalendiWordPressUtils();
 		parent::WP_Widget(false, $name = 'Kalendi Widget');	
 		add_action('wp_head', array(&$this, 'add_widget_headers'));
 	}
@@ -13,6 +15,7 @@ class Kalendi_Widget extends WP_Widget {
 		$options = $options[$this->number];
 		KalendiWordPressUtils::load_scripts();
 		KalendiWordPressUtils::styles($options['color1'], $options['color2'], $options['color3']);
+		$content = $this->util->updateCalendars();
 	}
 
 	function form($instance) {		
@@ -67,7 +70,7 @@ function register_kalendi_widget() {
 function kalendi_widget_admin_header() {
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'farbtastic' );
-	wp_enqueue_script( 'kalendi_widget_admin', WP_PLUGIN_URL . '/kalendi-calendar/javascripts/kalendi_widget_admin.js', array('jquery', 'farbtastic'));
+	wp_enqueue_script( 'kalendi_widget_admin', WP_PLUGIN_URL . '/kalendi-wordpress/javascripts/kalendi_widget_admin.js', array('jquery', 'farbtastic'));
 }
 
 function kalendi_widget_admin_style() {	

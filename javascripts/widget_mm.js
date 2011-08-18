@@ -475,7 +475,7 @@ function CalibrateMonthWidget (month_id, details_id, console_id,URL) {
 				var url = info["wp post url"];
 				if(!url.match("http://"))
 					url = "http://" + url;
-				var p = P({}, "by: " + info["wp author name"], BR(), "from: " + info["wp blog name"], BR(), A({"href":url}, "Read Post"))
+				var p = P({}, "by: " + info["wp author name"], BR(), "from: " + info["wp blog name"], BR(), A({"href":url, "target":"_blank"}, "Read Post"))
 				td.appendChild(p);
 	      this.replaceOrInsertNode (this.eventRows, kids, idx, tr);
 	      idx ++;

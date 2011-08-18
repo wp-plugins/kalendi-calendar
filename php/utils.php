@@ -1,4 +1,5 @@
 <?php
+require_once "XML/RSS.php";
 
 function match($whole_string, $string_to_match) {
 	return (boolean)strstr($whole_string, $string_to_match);
@@ -81,6 +82,285 @@ class KalendiWordPressUtils {
 		return TRUE;
 	}
 	
+	public function getWPCalendars() {
+		$params = array(
+			"userName" => get_option("kalendi_username"),
+			"password" => get_option("kalendi_password")
+		);
+		$content = "";
+		
+		$content = $this->makeKalendiAPIPost("getPublicCalendar", $params);
+		$arr = array();
+	
+		$found = strpos($content, "<calendarID>");
+		if($found === FALSE) {}
+		else{
+			
+			$xml = new SimpleXMLElement($content);
+		
+			foreach ($xml->calendar as $calendar){
+				
+				if ($calendar->calendarName == "wp-posts"){
+					
+					if ($calendar->description != "")
+						$arr[(string)$calendar->description] = $calendar->description;
+					else
+						$arr[(string)$calendar->owner] = $calendar->owner;
+					
+				}
+			}
+		}	
+		return $arr;
+	}
+	
+	public function updateCalendars(){
+		$replaced_list = explode("\n", get_option("kalendi_watch_list"));
+		$arr = $replaced_list;
+
+		foreach($arr as $i){
+			varlog("http://".trim($i)."/?feed=rss2", "Watch Blog:");
+			$handle = fopen("http://".trim($i)."/?feed=rss2","r");
+			
+			if ($handle){
+				fclose($handle);
+				varlog("http://".$i."/?feed=rss2", "File Exists:");
+				$rss = & new XML_RSS("http://".trim($i)."/?feed=rss2");
+				if (!$rss){
+					$rss = & new XML_RSS("http://".trim($i)."/feed");
+				}
+				$rss->parse();
+				$channel = $rss->getChannelInfo();
+				
+				$params = array(
+					'fields' => "wp-posts",
+					'searchString' => trim($i),
+					'userName' => get_option('kalendi_username'),
+					'password' => get_option('kalendi_password')
+				);
+				
+				$content = $this->makeKalendiAPIPost('getPublicCalendar', $params);
+				preg_match('@<calendarID>(.+?)</calendarID>@is', $content, $matches);
+				
+				varlog($content,"getPublicCalendar:");
+				
+				if(!empty($matches[1])) {
+					
+					//get latest post timestamp
+					$params = array(
+						'key' => "latest",
+						'calendarID' => $matches[1],
+						'userName' => get_option('kalendi_username'),
+						'password' => get_option('kalendi_password')
+					);
+
+					$content = $this->makeKalendiAPIPost('getCalendarMetaData', $params);
+					varlog($content,"Meta Data - Latest entry:");
+					preg_match('@<data key="latest">(.+?)</data>@is', $content, $latest);
+					
+					$count = 0;
+					foreach ($rss->getItems() as $entry)
+					{
+						varlog(strtotime($entry['pubdate']), "Update Blog Entry Time:");
+						varlog($latest[1], "Latest Update Time:");
+						if (strtotime($entry['pubdate'] < $latest[1])){
+							
+						}else{
+								 
+							if ($count == 0){
+								$params = array(
+									'key' => "latest",
+									'value' => strtotime($entry['pubdate']),
+									'calendarID' => $matches[1],
+									'userName' => get_option('kalendi_username'),
+									'password' => get_option('kalendi_password')
+								);
+
+								$content = $this->makeKalendiAPIPost('addCalendarMetaData', $params);
+							}
+							
+							varlog($entry['pubdate'], "Pub Date:");
+							varlog(strtotime($entry['pubdate']), "Timestamp:");
+							$start_date = date_i18n("m-d-Y", strtotime($entry['pubdate']), true);	
+							varlog($start_date,"Blog start date:");
+							$username = get_option('kalendi_username');
+							$password = get_option('kalendi_password');
+							$author = $entry['dc:creator'];
+							$post_url = $entry['link'];
+						
+							$blog_name = $channel['title'];
+							$blog_url = $channel['link'];
+							$author_name = $entry['dc:creator'];
+						
+							if(empty($author_name) || $author_name == " ") {
+								$author_name = "Unknown";
+							}
+						
+							$custom_props = array(
+								"wp author:$author",
+								"wp post url:$post_url",
+								"wp blog name:$blog_name",
+								"wp author name:$author_name",
+								"wp blog url:$blog_url"
+								);
+							$custom_props = implode(",", $custom_props);
+						
+							$description = $entry['description'];
+							$search = array("<![CDATA[", "]]>");
+							$replace = array("", "");
+							$description = str_replace($search, $replace, $description);
+							$description = $this->myTruncate($description, 100);
+						
+							$params = array(
+								'caption' => $entry['title'],
+								'description' => $description,
+								'allDay' => 'yes',
+								'startDT' => $start_date,
+								'customProp' => $custom_props,
+								'calendarID' => $matches[1],
+								'visibility' => 'public',
+								'userName' => $username,
+								'password' => $password				
+								);
+							$content = $this->makeKalendiAPIPost("addEvent", $params);
+							$count++;
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
+	//create new calendars and add events from options watch list via rss feeds
+	public function createCalendars(){
+		
+		$replaced_list = explode("\n", get_option("kalendi_watch_list"));
+		$arr = $replaced_list;
+		foreach($arr as $i){
+			varlog("http://".trim($i)."/?feed=rss2", "Watch Blog:");
+			$handle = fopen("http://".trim($i)."/?feed=rss2","r");
+			
+			if ($handle){
+				fclose($handle);
+				varlog("http://".$i."/?feed=rss2", "File Exists:");
+				$rss = & new XML_RSS("http://".trim($i)."/?feed=rss2");
+				if (!$rss){
+					$rss = & new XML_RSS("http://".trim($i)."/feed");
+				}
+				$rss->parse();
+				$channel = $rss->getChannelInfo();
+				varlog($channel['title'], "Channel Name:");
+				
+				$params = array(
+					'calendarID' => get_option('kalendi_calendar_id'),
+					'startDT' => date_i18n("m-d-Y", strtotime("6 months ago")),
+					'string' => $channel['link'],
+					'fields' => 'wp author,wp blog name,wp post url',
+					'userName' => $username,
+					'password' => $password
+				);
+				//varlog($params, "GetEvents API Call Params:");
+				$content = $this->makeKalendiAPIPost("getEvents", $params);
+
+				//varlog($content, "GetEvents API Call Return:");		
+				$found = strpos($content, "<eventID>");
+				//varlog($found, "Found variable: ");
+				if($found === FALSE) {
+				
+					$params = array(
+						'name' => $channel['title'],
+						'type' => 'Public',
+						'zoneID' => convert_timezone(get_option('timezone_string')),
+						'subscribe' => 'yes',
+						'publishWeb' => 'yes',
+						'publishICS' => 'yes',
+						'description' => str_replace("http://", "", $channel['link']),
+						'userName' => get_option('kalendi_username'),
+						'password' => get_option('kalendi_password')
+						);
+					$content = $this->makeKalendiAPIPost('createCalendar', $params);
+					preg_match('@<calendarID>(.+?)</calendarID>@is', $content, $matches);
+					varlog($matches[1], "Matches:");
+					//create calendar was successful
+					if(!empty($matches[1])) {
+						$params = array(
+							'key' => "wp-posts",
+							'value' => trim($i),
+							'calendarID' => $matches[1],
+							'userName' => get_option('kalendi_username'),
+							'password' => get_option('kalendi_password')
+							);
+
+						$content = $this->makeKalendiAPIPost('addCalendarMetaData', $params);
+						varlog($content,"Add Meta Data:");
+						$count = 0;
+						foreach ($rss->getItems() as $entry)
+						{
+							if ($count == 0){
+								$params = array(
+									'key' => "latest",
+									'value' => strtotime($entry['pubdate']),
+									'calendarID' => $matches[1],
+									'userName' => get_option('kalendi_username'),
+									'password' => get_option('kalendi_password')
+									);
+
+								$content = $this->makeKalendiAPIPost('addCalendarMetaData', $params);
+							}
+							varlog($entry['pubdate'], "Pub Date:");
+							varlog(strtotime($entry['pubdate']), "Timestamp:");
+							$start_date = date_i18n("m-d-Y", strtotime($entry['pubdate']), true);	
+							varlog($start_date,"Blog start date:");
+							$username = get_option('kalendi_username');
+							$password = get_option('kalendi_password');
+							$author = $entry['dc:creator'];
+							$post_url = $entry['link'];
+
+							$blog_name = $channel['title'];
+							$blog_url = $channel['link'];
+							$author_name = $entry['dc:creator'];
+
+							if(empty($author_name) || $author_name == " ") {
+								$author_name = "Unknown";
+							}
+
+							$custom_props = array(
+								"wp author:$author",
+								"wp post url:$post_url",
+								"wp blog name:$blog_name",
+								"wp author name:$author_name",
+								"wp blog url:$blog_url"
+								);
+							$custom_props = implode(",", $custom_props);
+
+							$description = $entry['description'];
+							$search = array("<![CDATA[", "]]>");
+							$replace = array("", "");
+							$description = str_replace($search, $replace, $description);
+							$description = $this->myTruncate($description, 100);
+
+							$params = array(
+								'caption' => $entry['title'],
+								'description' => $description,
+								'allDay' => 'yes',
+								'startDT' => $start_date,
+								'customProp' => $custom_props,
+								'calendarID' => $matches[1],
+								'visibility' => 'public',
+								'userName' => $username,
+								'password' => $password				
+								);
+							$content = $this->makeKalendiAPIPost("addEvent", $params);
+							varlog($content,"Add Event return:");
+							$count++;
+						}			
+				}
+			}
+	}
+		
+	}
+}
+	
 	protected function addCustomProp($label) {
 		// Add the basic custom prop params
 		$params = array(
@@ -148,6 +428,7 @@ class KalendiWordPressUtils {
 				'subscribe' => 'yes',
 				'publishWeb' => 'yes',
 				'publishICS' => 'yes',
+				'description' => str_replace("http://", "", get_bloginfo('url')),
 				'userName' => $username,
 				'password' => $password
 			);
@@ -230,7 +511,7 @@ class KalendiWordPressUtils {
 			varlog($data, "DATA SENT TO " . $url);
 
 	    // send the request headers:
-	    fputs($fp, "POST $path HTTP/1.1\r\n");
+	    fputs($fp, "POST $path HTTP/1.0\r\n");
 	    fputs($fp, "Host: $host\r\n");
 	    fputs($fp, "Referer: $referer\r\n");
 	    fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
@@ -280,6 +561,7 @@ class KalendiWordPressUtils {
 	}
 
 	public static function load_scripts() {
+
 		?><script type="text/javascript" 			src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 			<script language="Javascript">
 			$(document).ready(function () {
@@ -329,13 +611,20 @@ class KalendiWordPressUtils {
 			    x.mode = "week" // startup mode
 			    x.getEventsFromCalibrate ("<?php 
 						$replaced_list = preg_replace("/\s+/", " ", get_option("kalendi_watch_list"));
+						
+						/*$options = get_option("kalendi_watch_list");
+						foreach($options as $i => $value){
+							$replaced_list .= $value . " ";
+						}*/
 						//varlog($replaced_list, "REPLACED LIST");
+						
 						if(empty($replaced_list)) {
 							$searchStr = get_bloginfo('url');
 						} else {
 							$arr = array($replaced_list, get_bloginfo('url'));
 							$searchStr = implode(" ", $arr);
 						}
+						
 						echo $searchStr;
 					?>", "<?php echo convert_timezone(get_option("timezone_string")) ?>");
 			}
@@ -366,6 +655,9 @@ class KalendiWordPressUtils {
 					<div id="schedule_mm776" style="width:180px; margin-bottom:0px;"></div>
 				</div>
 				<div id="details_mm776" style="width:180px">Downloading calendar events from <a href="http://www.kalendi.com">Kalendi</a>&#8230;
+				</div>
+				<div align="center" style="margin:5px;font-size:9px;">
+					<a href="http://wordpress.org/extend/plugins/kalendi-calendar/" target="_blank">Kalendi Calendar Plugin</a>
 				</div> 
 			</div>
 		<?php

@@ -3,8 +3,8 @@ Contributors: Happy Jack Software
 Donate link: http://www.kalendi.com
 Tags: kalendi, calendar,
 Requires at least: 2.0.2
-Tested up to: 3.0.1
-Stable tag: trunk
+Tested up to: 3.0.4
+Stable tag: 1.10
 
 With this Plugin you can track multiple blogs and authors who also use the Kalendi Plugin as well as announce events in a calendar format.
 
