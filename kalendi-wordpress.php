@@ -2,7 +2,7 @@
 /*
 Plugin Name: Kalendi for WordPress
 Plugin URI: http://www.kalendi.com
-Version: v0.1
+Version: v1.10
 Author: Happy Jack Software
 Description: Integrates Kalendi with WordPress for blog calendaring.
 */
