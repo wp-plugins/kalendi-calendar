@@ -97,6 +97,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Added link to Kalendi Calendar WordPress plugin page
 * Requires XML_RSS PEAR library
 * Post links open in new window
+*
 
 == Upgrade Notice ==
 
@@ -111,3 +112,4 @@ Adjusted Stylesheet
 * Added link to Kalendi Calendar WordPress plugin page
 * Requires XML_RSS PEAR library
 * Post links open in new window
+*
