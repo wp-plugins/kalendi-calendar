@@ -92,6 +92,12 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 = 1.01 =
 * Adjusted Stylesheet
 
+= 1.10 =
+* Add support for any WordPress blog with a standard rss feed. Users can follow any WordPress blog with a standard rss feed rather than being restricted to just other Kalendi user blogs.
+* Added link to Kalendi Calendar WordPress plugin page
+* Requires XML_RSS PEAR library
+* Post links open in new window
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -100,3 +106,8 @@ Initial Release
 = 1.01 =
 Adjusted Stylesheet
 
+= 1.10 =
+* Add support for any WordPress blog with a standard rss feed. Users can follow any WordPress blog with a standard rss feed rather than being restricted to just other Kalendi user blogs.
+* Added link to Kalendi Calendar WordPress plugin page
+* Requires XML_RSS PEAR library
+* Post links open in new window
