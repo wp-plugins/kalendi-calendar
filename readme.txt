@@ -83,9 +83,9 @@ Yes. The Kalendi Calendar plugin stores posts and events on the Kalendi servers 
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
-2. This is the second screen shot
+1. /tags/1.10/screenshot-1.png
+2. /tags/1.10/screenshot-2.png
+3. /tags/1.10/screenshot-3.png
 
 == Changelog ==
 
