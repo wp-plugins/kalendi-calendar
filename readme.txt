@@ -80,9 +80,9 @@ Yes. The Kalendi Calendar plugin stores posts and events on the Kalendi servers 
 
 == Screenshots ==
 
-1. /tags/1.10/screenshot-1.png
-2. /tags/1.10/screenshot-2.png
-3. /tags/1.10/screenshot-3.png
+1. The Kalendi widget placed on the right-hand column.
+2. Kalendi plugin settings page.
+3. Kalendi WordPress plugin widget.
 
 == Changelog ==
 
