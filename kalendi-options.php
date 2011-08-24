@@ -722,7 +722,7 @@ class kalendi_wordpress_options {
 						Yes <input type="radio" name="kalendireset" value="yes"/> No <input type="radio" name="kalendireset" value="no" selected="yes"/>
 					</td>
 				</tr>
-			<table>
+			</table>
 		
 		<h2>Kalendi for WordPress Options</h2>
 		
@@ -739,7 +739,7 @@ class kalendi_wordpress_options {
 		<p>Watch List</p>
 				
 			   	<textarea rows="6" cols="40" id="kalendi_watch_list" name="kalendi_watch_list"><?php echo get_option('kalendi_watch_list') ?></textarea> 
-				<p>Choose from these Kalendi user blogs and click the "Add to list" button to add them to your watch list. Select multiple items with CTRL+click.
+				<p>Choose from these Kalendi user blogs and click the "Add to list" button to add them to your watch list. Select multiple items with CTRL+click.</p>
 				<select multiple="multiple" size="10" id="kalendi_blogs" name="kalendi_blogs" style="height:150px;width:200px;">
 				<?php
 					$arr = array();
